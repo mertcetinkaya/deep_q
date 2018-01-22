@@ -183,7 +183,13 @@ for episode in range(epoch):
     for step in range(200):
         if current_state == np.array([goal_state]):
             wincount+=1
-            instance_last=instance
+            if wincount==1:
+                lenmin=len(instance)
+                instance_last = instance
+            else:
+                if len(instance)<=lenmin:
+                    lenmin=len(instance)
+                    instance_last=instance
             break
 
         if np.random.rand() <= current_epsilon:
@@ -205,7 +211,10 @@ for episode in range(epoch):
 
         [a, b] = state2coordinate(next_state[0], N)
         if maze[a, b] == 0:
-            step-=1
+            if step==0:
+                step=0
+            else:
+                step-=1
 
         else:
             print("wincount {} | Epsilon {:.4f} | State {} | Act {} | Next State {}".
